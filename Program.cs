@@ -11,15 +11,17 @@ class Program
 
         var boundary = (int)Math.Floor(Math.Sqrt(number));
         for (int i = 2; i <= boundary; i++)
+        {
             if (number % i == 0)
                 return false;
+        }
 
         return true;
     }
     public static List<int> FindPrimeInRangeSync(int start, int end)
     {
         List<int> primes = [];
-        foreach (var i in Enumerable.Range(start, end - 1))
+        foreach (var i in Enumerable.Range(start, end - start + 1))
         {
             if (IsPrime(i))
             {
@@ -32,13 +34,16 @@ class Program
     {
         List<int> primes = [];
         List<Task> tasks = [];
-        foreach (var i in Enumerable.Range(start, end - 1))
+        foreach (var i in Enumerable.Range(start, end - start + 1))
         {
             tasks.Add(Task.Run(() =>
             {
                 if (IsPrime(i))
                 {
-                    primes.Add(i);
+                    lock (primes)
+                    {
+                        primes.Add(i);
+                    }
                 }
             }));
         }
@@ -47,8 +52,11 @@ class Program
     }
     static void Main(string[] args)
     {
-        int start = 2;
-        int end = 10000000;
+        Console.Write("Start: ");
+        int start = Convert.ToInt32(Console.ReadLine());
+        Console.Write("End: ");
+        int end = Convert.ToInt32(Console.ReadLine());
+        Console.WriteLine("-------");
 
         var sw = new Stopwatch();
         sw.Start();
