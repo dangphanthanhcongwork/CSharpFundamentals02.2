@@ -31,7 +31,7 @@ class Program
     public static async Task<List<int>> FindPrimeInRangeAsync(int start, int end)
     {
         List<int> primes = [];
-        List<Task> tasks = new(end - start + 1);
+        List<Task> tasks = [];
         foreach (var i in Enumerable.Range(start, end - 1))
         {
             tasks.Add(Task.Run(() =>
@@ -48,16 +48,16 @@ class Program
     static void Main(string[] args)
     {
         int start = 2;
-        int end = 20000;
+        int end = 10000000;
 
         var sw = new Stopwatch();
         sw.Start();
         var primesSync = FindPrimeInRangeSync(start, end);
         sw.Stop();
-        foreach (var prime in primesSync)
-        {
-            Console.Write(prime + " ");
-        }
+        // foreach (var prime in primesSync)
+        // {
+        //     Console.Write(prime + " ");
+        // }
         Console.WriteLine();
         Console.WriteLine("Using Synchronous");
         Console.WriteLine("Total prime numbers: " + primesSync.Count);
@@ -68,10 +68,10 @@ class Program
         sw.Start();
         var primesAsync = FindPrimeInRangeAsync(start, end);
         sw.Stop();
-        foreach (var prime in primesAsync.Result)
-        {
-            Console.Write(prime + " ");
-        }
+        // foreach (var prime in primesAsync.Result)
+        // {
+        //     Console.Write(prime + " ");
+        // }
         Console.WriteLine();
         Console.WriteLine("Using Asynchronous");
         Console.WriteLine("Total prime numbers: " + primesAsync.Result.Count);
